@@ -1,5 +1,6 @@
 ({
-    validateAddress : function(cmp,event,billingAddress) {
+    createAddress : function(cmp,event,billingAddress) {
+        console.log('billingAddress '+JSON.stringify(billingAddress));
         var action = component.get("c.validateAddressBySmartyStreetAPI");
         action.setParams({
         "billingAddress": billingAddress
@@ -8,7 +9,6 @@
     action.setCallback(this, function(response) {
         var state = response.getState();
         if (state === "SUCCESS") {
-            var items = [];
             console.log(response.getReturnValue());
             var response = response.getReturnValue();
             
@@ -17,11 +17,11 @@
            
         }
         else {
-            var resp = response;
+           
             console.log("Error: " + state);
         }
     });
-    // Send action off to be executed
+
     $A.enqueueAction(action);
     }
 })

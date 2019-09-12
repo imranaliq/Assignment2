@@ -1,4 +1,4 @@
-<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes" controller="AddressValidationCtrl">
+<aura:component implements="flexipage:availableForAllPageTypes" access="global" Controller="AddressValidationCtrl">
 
     <aura:attribute name="billingAddress" type="BillingAddress__c"
          default="{ 'sobjectType': 'BillingAddress__c',
@@ -22,38 +22,35 @@
     <!-- / PAGE HEADER -->
 
     <lightning:layout>
-        <lightning:layoutItem padding="around-small" size="6">
+        <lightning:layoutItem size="12">
         <div aria-labelledby="newbillingform">
         <!-- BOXED AREA -->
-        <fieldset class="slds-box slds-theme--default slds-container--small">
-        <legend id="newbillingform" class="slds-text-heading--small 
-          slds-p-vertical--medium">
-          Add Billing Address
-        </legend>
+       <fieldset class="slds-box slds-theme--default slds-container--small">
+       
   
-        <!-- CREATE NEW EXPENSE FORM -->
+        <!-- CREATE NEW Address FORM -->
         <form class="slds-card__body">          
-            <lightning:input aura:id="" label="Street"
+            <lightning:input aura:id="billingform" label="Street"
                              name="Street"
                              value="{!v.billingAddress.Street__c}"
                              required="true"/> 
-            <lightning:input aura:id="State" label="State"
+            <lightning:input aura:id="billingform" label="State"
                              name="State"
                              value="{!v.billingAddress.State__c}"
                              required="true"/> 
-                             <lightning:input aura:id="City" label="City"
+                             <lightning:input aura:id="billingform" label="City"
                              name="City"
                              value="{!v.billingAddress.City__c}"/>
-            <lightning:input aura:id="ZipCode" label="ZipCode"
+            <lightning:input aura:id="billingform" label="ZipCode"
                              name="ZipCode"
                              value="{!v.billingAddress.Zip_Code__c}"/>
             
-            <lightning:button label="Create Address" 
+            <lightning:button label="Add Address" 
                               class="slds-m-top--medium"
                               variant="brand"
                               onclick="{!c.clickCreate}"/>
         </form>
-        <!-- / CREATE NEW EXPENSE FORM -->
+        <!-- / CREATE NEW Address FORM -->
   
       </fieldset>
       <!-- / BOXED AREA -->

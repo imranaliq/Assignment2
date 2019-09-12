@@ -4,22 +4,22 @@ public class APIResponse {
 	public String delivery_line_1;
 	public String last_line;
 	public String delivery_point_barcode;
-public AddressComponent components;
-		public AddressMetadata metadata;
-		public AddressAnalysis analysis;
+	
+	public AddressComponent components;
+	public AddressMetadata metadata;
+	public AddressAnalysis analysis;
+	
 	public APIResponse(){
-			this.components = new Components();
-			this.metadata = new Analysis();
-			this.analysis = new Metadata();
+			this.components = new AddressComponent();
+			this.metadata = new AddressMetadata();
+			this.analysis = new AddressAnalysis();
 		}
-    public static APIResponse parse(String json) {
+    
+	public static APIResponse parse(String json) {
 		return (APIResponse) System.JSON.deserialize(json, APIResponse.class);
 	}
-}
 
-
-
-	public class Components {
+	public class AddressComponent {
 		public String primary_number;
 		public String street_name;
 		public String street_suffix;
@@ -33,7 +33,7 @@ public AddressComponent components;
 
 	
 
-	public class Analysis {
+	public class AddressAnalysis {
 		public String dpv_match_code;
 		public String dpv_footnotes;
 		public String dpv_cmra;
@@ -42,7 +42,7 @@ public AddressComponent components;
 		public String footnotes;
 	}
 
-	public class Metadata {
+	public class AddressMetadata {
 		public String record_type;
 		public String zip_type;
 		public String county_fips;
@@ -60,5 +60,10 @@ public AddressComponent components;
 		public Boolean dst;
 	}
 
+}
+
+
+
+	
 	
 	

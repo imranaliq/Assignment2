@@ -1,31 +1,17 @@
 public with sharing class AddressValidationCtrl {
-    public AddressValidationCtrl() {
-
-    }
-
-  /*  public void validateAddressBySmartyStreetAPI(BillingAddress billingAddress){
-        Http http = new Http();
-        HttpRequest request = new HttpRequest();
-        let authId = '4975f34a-2bc6-beba-1e66-b36c34b489f2';
-        let token = 'doEAytIKWFoaHLCNsn8W';
-        request.setEndpoint('https://us-street.api.smartystreets.com/street-address?auth-id='+authId
-        +'&auth-token='+token);
-        request.setMethod('GET');
-        HttpResponse response = new HttpResponse();
-
-        if(response.getStatusCode() == '200')
-        {
-            system.debug(response.getbody());
-        }
-    }*/
-
+  
     @AuraEnabled
 public static String validateAddressBySmartyStreetAPI(BillingAddress__c billingAddress){
     String message = '';
     Http http = new Http();
-     String authId = '4975f34a-2bc6-beba-1e66-b36c34b489f2';
-        String token = 'doEAytIKWFoaHLCNsn8W';
+
+    /*Set Auth Id and token*/
+    String authId = '4975f34a-2bc6-beba-1e66-b36c34b489f2';
+    String token = 'doEAytIKWFoaHLCNsn8W';
+
 HttpRequest request = new HttpRequest();
+
+/*Set API End point */
 request.setEndpoint('https://us-street.api.smartystreets.com/street-address?auth-id='+authId
 +'&auth-token='+token+'&'
 +'street='+EncodingUtil.urlEncode(billingAddress.Street__c, 'UTF-8')
@@ -34,6 +20,8 @@ request.setEndpoint('https://us-street.api.smartystreets.com/street-address?auth
 +'&candidates=10&match=invalid');
 
 request.setMethod('GET');
+
+/*Call API*/
 HttpResponse response = http.send(request);
    
 if (response.getStatusCode() == 200) {
@@ -41,11 +29,16 @@ if (response.getStatusCode() == 200) {
 List<Object> results = (List<Object>)JSON.deserializeUntyped(response.getBody());
 
      for (Object obj: results) {
+
+         /*Parse respponse*/
          APIResponse res = (APIResponse)APIResponse.parse(JSON.serialize(obj));
         
+        /*Set billing address on the basis of response components*/
          billingAddress.City__c = res.components.city_name;
          billingAddress.State__c = res.components.state_abbreviation;
          billingAddress.Street__c = res.delivery_line_1+' '+res.last_line;
+
+         /*Set return message on the basis of response*/
          if(res.analysis.dpv_match_code == 'Y'){
              message = 'Confirmed; entire address was DPV confirmed deliverable.';
          } else if(res.analysis.dpv_match_code == 'N'){
@@ -59,6 +52,7 @@ List<Object> results = (List<Object>)JSON.deserializeUntyped(response.getBody())
          }
     
      }
+     /*Insert billing Address*/
       insert billingAddress;
 
 return message;
